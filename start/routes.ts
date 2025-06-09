@@ -8,6 +8,7 @@
 */
 
 const OpenaisController = () => import('#controllers/openais_controller')
+const QuotasController = () => import('#controllers/quotas_controller')
 import router from '@adonisjs/core/services/router'
 
 router.get('/', async () => {
@@ -17,3 +18,4 @@ router.get('/', async () => {
 })
 
 router.post('/openai/chat', [OpenaisController, 'chat'])
+router.get('/quota/create', [QuotasController, 'createNewQuota'])
