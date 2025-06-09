@@ -4,6 +4,15 @@ import { DateTime } from 'luxon'
 export const manageQuota = async (userId: number): Promise<void> => {
   try {
     const quota = await QuotaCode.query().where('user_id', userId).firstOrFail()
+
+    if (!quota) {
+      await QuotaCode.create({
+        userId: userId,
+        quotaTotal: 10, // Valeur par défaut, peut être modifiée selon les besoins
+        evalaibleQuota: 10,
+        updatedAt: DateTime.now(),
+      })
+    }
     const now = DateTime.now()
     if (!quota.updatedAt.hasSame(now, 'day')) {
       quota.evalaibleQuota = quota.quotaTotal
