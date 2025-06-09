@@ -8,6 +8,7 @@
 */
 
 const OpenaisController = () => import('#controllers/openais_controller')
+const QuotasController = () => import('#controllers/quotas_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 
