@@ -8,12 +8,13 @@ export const historyService = async (
 ): Promise<void> => {
   try {
     const quota = await QuotaCode.query().where('user_id', userId).firstOrFail()
+
     const newHistory = await History.create({
       quotaCodeId: quota.id,
       prompt: prompt,
       answer: answer || undefined,
     })
-    await quota.related('histories').save(newHistory)
+    await newHistory.load('quotaCode')
   } catch (error) {
     if (error.code === 'E_ROW_NOT_FOUND') {
       throw new Error('Code de quota invalide ou inexistant')

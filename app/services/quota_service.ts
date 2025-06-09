@@ -3,36 +3,40 @@ import { DateTime } from 'luxon'
 
 export const manageQuota = async (userId: number): Promise<void> => {
   try {
-    const quota = await QuotaCode.query().where('user_id', userId).firstOrFail()
+    // Cherche sans lever d'exception
+    let quota = await QuotaCode.query().where('user_id', userId).first()
 
+    // S’il n’existe pas, on le crée
     if (!quota) {
-      await QuotaCode.create({
+      quota = await QuotaCode.create({
         userId: userId,
-        quotaTotal: 10, // Valeur par défaut, peut être modifiée selon les besoins
+        quotaTotal: 10,
         evalaibleQuota: 10,
         updatedAt: DateTime.now(),
       })
+      quota.evalaibleQuota -= 1
+      await quota.save()
     }
+
     const now = DateTime.now()
+
+    // Si on a changé de jour, on réinitialise le quota
     if (!quota.updatedAt.hasSame(now, 'day')) {
       quota.evalaibleQuota = quota.quotaTotal
       quota.updatedAt = now
       await quota.save()
     }
 
+    // Si plus de quota dispo
     if (quota.evalaibleQuota <= 0) {
-      throw new Error('Quota épuisé')
+      throw new Error('Vous avez atteint la limite de requêtes journalières')
     }
+
+    // Sinon, décrémenter le quota
     quota.evalaibleQuota -= 1
     await quota.save()
   } catch (error) {
-    if (error.code === 'E_ROW_NOT_FOUND') {
-      throw new Error('Code de quota invalide ou inexistant')
-    } else if (error.message === 'Quota épuisé') {
-      throw new Error('Vous avez atteint la limite de reqêtes journalières')
-    } else {
-      console.error('Erreur lors de la gestion du quota:', error)
-      throw new Error('Erreur interne du serveur lors de la gestion du quota.')
-    }
+    console.error('Erreur lors de la gestion du quota:', error)
+    throw error // Ne le retransforme pas ici, tu peux attraper dans ton controller
   }
 }
