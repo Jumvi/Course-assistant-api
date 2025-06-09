@@ -18,6 +18,6 @@ router.get('/', async () => {
   }
 })
 
-router.post('/openai/chat', [OpenaisController, 'chat'])
+router.post('/openai/chat', [OpenaisController, 'chat']).use(middleware.auth({ guards: ['api'] }))
 router.post('/singUp', [AuthController, 'singUp'])
 router.post('/login', [AuthController, 'login'])
