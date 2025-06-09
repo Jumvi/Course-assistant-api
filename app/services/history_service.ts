@@ -2,12 +2,12 @@ import History from '#models/history'
 import QuotaCode from '#models/quota_code'
 
 export const historyService = async (
-  quotaCode: number,
+  userId: number,
   prompt: string,
   answer?: string
 ): Promise<void> => {
   try {
-    const quota = await QuotaCode.query().where('code', quotaCode).firstOrFail()
+    const quota = await QuotaCode.query().where('user_id', userId).firstOrFail()
     const newHistory = await History.create({
       quotaCodeId: quota.id,
       prompt: prompt,
