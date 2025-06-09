@@ -3,19 +3,17 @@ import OpenAiService from '#services/openai_service'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class OpenaisController {
-  async chat({ request, response }: HttpContext) {
-    const data = request.only(['prompt', 'code'])
+  async chat({ request, response, auth }: HttpContext) {
+    const data = request.only(['prompt'])
+    const user = auth.user!
     if (!data.prompt) {
       return response.status(400).send({ error: 'Le prompt est requis.' })
     }
 
     try {
-      // Vérification et gestion du quota
-      if (!data.code) {
-        return response.status(400).send({ error: 'Le code de quota est requis.' })
-      }
+      // Vérification et gestion du quot
 
-      await manageQuota(data.code)
+      await manageQuota(user.id)
       const answer = await OpenAiService.chatCompletion(data.prompt)
       return response.json({ answer })
     } catch (error) {

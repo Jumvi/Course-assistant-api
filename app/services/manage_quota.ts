@@ -1,9 +1,9 @@
 import QuotaCode from '#models/quota_code'
 import { DateTime } from 'luxon'
 
-export const manageQuota = async (quotaCode: string): Promise<void> => {
+export const manageQuota = async (userId: number): Promise<void> => {
   try {
-    const quota = await QuotaCode.query().where('code', quotaCode).firstOrFail()
+    const quota = await QuotaCode.query().where('user_id', userId).firstOrFail()
     const now = DateTime.now()
     if (!quota.updatedAt.hasSame(now, 'day')) {
       quota.evalaibleQuota = quota.quotaTotal
