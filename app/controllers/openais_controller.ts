@@ -15,7 +15,7 @@ export default class OpenaisController {
 
       await manageQuota(user.id)
       const answer = await OpenAiService.chatCompletion(data.prompt)
-      await historyService(data.code, data.prompt, answer)
+      await historyService(user.id, data.prompt, answer)
 
       return response.json({ answer })
     } catch (error) {
