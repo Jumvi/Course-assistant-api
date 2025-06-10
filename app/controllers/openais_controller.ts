@@ -2,6 +2,7 @@ import { manageQuota } from '#services/quota_service'
 import OpenAiService from '#services/openai_service'
 import type { HttpContext } from '@adonisjs/core/http'
 import { historyService } from '#services/history_service'
+import History from '#models/history'
 
 export default class OpenaisController {
   async chat({ request, response, auth }: HttpContext) {
@@ -12,12 +13,13 @@ export default class OpenaisController {
     }
     try {
       // Vérification et gestion du quot
-
       await manageQuota(user.id)
       const answer = await OpenAiService.chatCompletion(data.prompt)
       await historyService(user.id, data.prompt, answer)
-
-      return response.json({ answer })
+      const userChatHistory = await History.query()
+        .where('user_id', user.id)
+        .orderBy('created_at', 'asc')
+      return response.json({ userChatHistory })
     } catch (error) {
       console.error('Erreur lors de la génération de la réponse:', error)
       return response.status(500).send({ error: 'Erreur interne du serveur.' })

@@ -1,14 +1,15 @@
 import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
-import QuotaCode from './quota_code.js'
+
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import User from './user.js'
 
 export default class History extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
   @column()
-  declare quotaCodeId: number
+  declare userId: number
 
   @column()
   declare prompt: string
@@ -21,6 +22,6 @@ export default class History extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 
-  @belongsTo(() => QuotaCode)
-  declare quotaCode: BelongsTo<typeof QuotaCode>
+  @belongsTo(() => User)
+  declare user: BelongsTo<typeof User>
 }
