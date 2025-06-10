@@ -16,9 +16,11 @@ export default class OpenaisController {
       await manageQuota(user.id)
       const answer = await OpenAiService.chatCompletion(data.prompt)
       await historyService(user.id, data.prompt, answer)
+
       const userChatHistory = await History.query()
         .where('user_id', user.id)
         .orderBy('created_at', 'asc')
+        .limit(10)
       return response.json({ userChatHistory })
     } catch (error) {
       console.error('Erreur lors de la génération de la réponse:', error)
