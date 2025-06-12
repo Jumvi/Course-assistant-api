@@ -19,7 +19,7 @@ export default class OpenaisController {
 
       const userChatHistory = await History.query()
         .where('user_id', user.id)
-        .orderBy('created_at', 'asc')
+        .orderBy('created_at', 'desc')
         .limit(10)
       return response.json({ userChatHistory })
     } catch (error) {
