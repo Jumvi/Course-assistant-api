@@ -11,6 +11,7 @@ const OpenaisController = () => import('#controllers/openais_controller')
 const AuthController = () => import('#controllers/auth_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const HistoriesController = () => import('#controllers/histories_controller')
 
 router.get('/', async () => {
   return {
@@ -21,3 +22,6 @@ router.get('/', async () => {
 router.post('/openai/chat', [OpenaisController, 'chat']).use(middleware.auth({ guards: ['api'] }))
 router.post('/singUp', [AuthController, 'singUp'])
 router.post('/login', [AuthController, 'login'])
+router
+  .get('/user/chat/history', [HistoriesController, 'getUserChatHistory'])
+  .use(middleware.auth({ guards: ['api'] }))
