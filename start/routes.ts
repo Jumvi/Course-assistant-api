@@ -25,3 +25,7 @@ router.post('/login', [AuthController, 'login'])
 router
   .get('/user/chat/history', [HistoriesController, 'getUserChatHistory'])
   .use(middleware.auth({ guards: ['api'] }))
+
+router
+  .get('/chat/history', [HistoriesController, 'getAllHistory'])
+  .use(middleware.auth({ guards: ['api'] }))
