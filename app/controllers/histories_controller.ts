@@ -8,7 +8,7 @@ export default class HistoriesController {
       const userChatHistory = await History.query()
         .preload('user')
         .where('user_id', user.id)
-        .orderBy('created_at', 'desc')
+        .orderBy('created_at', 'asc')
         .limit(20)
 
       return response.json({
@@ -25,7 +25,10 @@ export default class HistoriesController {
 
   async getAllHistory({ response }: HttpContext) {
     try {
-      const allHistory = await History.query().preload('user').orderBy('created_at', 'desc')
+      const allHistory = await History.query()
+        .preload('user')
+        .orderBy('created_at', 'asc')
+        .limit(30)
 
       return response.json({
         history: allHistory,
