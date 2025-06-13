@@ -18,7 +18,20 @@ const typesense = new Typesense.Client({
 const COLLECTION_NAME = 'cours_chunks'
 
 export async function getContextForQuestion(question: string) {
-  // Recherche sémantique simple (fulltext). Pour du vectoriel, voir Typesense Hybrid Search ou Qdrant.
+  // Si la question concerne les modules, retourne le chunk SOMMAIRE
+  if (/\bmodules?\b/i.test(question)) {
+    const sommaire = await typesense.collections(COLLECTION_NAME).documents().search({
+      q: 'SOMMAIRE',
+      query_by: 'module',
+      per_page: 1,
+    })
+    if (sommaire.hits && sommaire.hits.length > 0) {
+      // Typesense renvoie le document comme un objet générique, castons-le en any
+      const doc = sommaire.hits[0].document as any
+      return doc.content || JSON.stringify(doc)
+    }
+  }
+  // Recherche sémantique classique
   const searchParameters = {
     q: question,
     query_by: 'content',

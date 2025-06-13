@@ -6,11 +6,16 @@ const client = new OpenAi({
 })
 
 export default class OpenAiService {
-  static async chatCompletion(prompt: string): Promise<string> {
+  static async chatCompletion(prompt: string, context: string): Promise<string> {
     const response = await client.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
-        { role: 'system', content: 'Tu es un assistant pédagogique qui répond aux étudiants.' },
+        {
+          role: 'system',
+          content:
+            "Tu es un assistant pédagogique qui répond aux étudiants en formation sur le développement web et mobile fullstack. Tu dois répondre uniquement en utilisant le contexte du programme de formation fourni ci-dessous. Si la réponse à la question ne se trouve pas explicitement dans ce contexte, tu dois répondre : 'Désolé, dans mon contexte du cours il n'y a pas ce détail.' N'invente jamais de réponse et ne complète pas avec des connaissances extérieures.",
+        },
+        { role: 'system', content: `Contexte : ${context}` },
         { role: 'user', content: prompt },
       ],
       max_tokens: 500,

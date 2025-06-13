@@ -58,6 +58,7 @@
     "@vinejs/vine": "^3.0.1",
     "dotenv": "^16.5.0",
     "luxon": "^3.6.1",
+    "markdown-it": "^14.1.0",
     "openai": "^5.1.1",
     "pg": "^8.16.0",
     "reflect-metadata": "^0.2.2",

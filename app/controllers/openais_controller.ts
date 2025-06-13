@@ -3,6 +3,7 @@ import OpenAiService from '#services/openai_service'
 import type { HttpContext } from '@adonisjs/core/http'
 import { historyService } from '#services/history_service'
 import History from '#models/history'
+import { getContextForQuestion } from '#services/context_service'
 
 export default class OpenaisController {
   async chat({ request, response, auth }: HttpContext) {
@@ -14,7 +15,8 @@ export default class OpenaisController {
     try {
       // Vérification et gestion du quot
       await manageQuota(user.id)
-      const answer = await OpenAiService.chatCompletion(data.prompt)
+      const context = await getContextForQuestion(data.prompt)
+      const answer = await OpenAiService.chatCompletion(data.prompt, context)
       await historyService(user.id, data.prompt, answer)
 
       const userChatHistory = await History.query()
