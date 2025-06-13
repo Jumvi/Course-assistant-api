@@ -33,4 +33,15 @@ Explication :
 - NOT NULL : Contrainte qui garantit qu'une colonne ne peut pas avoir de valeur NULL.
 - TIMESTAMP : Type de données pour les valeurs de date et d'heure.
 - DEFAULT : Définit une valeur par défaut pour la colonne si aucune valeur n'est spécifiée.
+
+
+### Format d'exemple
+
+Pour chaque exemple, utilise un format qui inclut :
+- Le code ou la commande.
+- Des commentaires explicatifs pour chaque partie du code.
+- Une brève explication des concepts clés utilisés dans l'exemple.
+
+Ce format aidera les étudiants à comprendre non seulement comment utiliser les technologies, mais aussi pourquoi et comment elles fonctionnent.
+
 `
