@@ -22,7 +22,6 @@ export default class OpenaisController {
       const userChatHistory = await History.query()
         .where('user_id', user.id)
         .orderBy('created_at', 'asc')
-        .limit(10)
       return response.json({ userChatHistory })
     } catch (error) {
       console.error('Erreur lors de la génération de la réponse:', error)
