@@ -84,7 +84,7 @@ npm run start
 1. Installer Docker et Node.js sur le serveur (ex : DigitalOcean)
 2. Démarrer Typesense avec Docker (voir plus haut)
 3. Générer les chunks de contexte (`node scripts/index_course_to_typesense.js`)
-4. Configurer les variables d'environnement (`.env`), notamment la clé OpenAI et la clé Typesense
+4. Configurer les variables d'environnement (`.env`), notamment la clé OpenAI et la clé Typesense(mais pas si on lance typesense en local avec docker. sauf si on se décide d'utiliser typesense cloud)
 5. Lancer l'application (`npm run build && npm run start`)
 6. Sécuriser l'accès à Typesense (firewall, clé API forte)
 7. Mettre en place des sauvegardes régulières du dossier `typesense-data` et de la base PostgreSQL
