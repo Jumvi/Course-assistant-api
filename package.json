@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node bin/server.js",
     "typesense": "docker start typesense-server || docker run -d --name=typesense-server -p 8108:8108 -v \"$(pwd)/typesense-data:/data\" typesense/typesense:0.25.2 --data-dir /data --api-key=xyz --enable-cors",
+    "chunck": "node scripts/index_course_to_typesense.js",
     "build": "node ace build",
     "dev": "node ace serve --hmr",
     "test": "node ace test",
